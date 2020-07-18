@@ -1,10 +1,12 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <vector>
+
 #include "map.h"
 #include "TileMap.h"
-#include "Entity.h"
+#include "Player.h"
 
 class Game
 {
@@ -13,16 +15,17 @@ private:
 	sf::Clock clock;
 	sf::Time elapsedTime;
 
-	Player player;
+	std::vector<Entity*> entities;
+
+	Player player{ entities };
 	Map cmap;
 	TileMap background;
 
-	std::vector<Entity> Entities;
-
+	int fps = 0;
 	float frame_counter = 0.0;
-    int fps = 0;
-
-	void getInput();
+   
+private:
+	void getInput(float elapsedTime);
 
 public:
 	int GameLoop();

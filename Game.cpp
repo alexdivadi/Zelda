@@ -1,9 +1,9 @@
 #include "Game.h"
 #include <iostream>
 
-int Game::GameLoop() {
-
-    cmap.Create("O-1.txt", &player.sprite, "O-1");
+int Game::GameLoop() 
+{
+    cmap.Create("O-1.txt", &player.getSprite(), "O-1");
 
     if (!background.load("Sprites/tiles.png", cmap))
         return -1;
@@ -11,16 +11,18 @@ int Game::GameLoop() {
     while (window.isOpen())
     {
         elapsedTime = clock.restart();
-        getInput();
+        getInput(elapsedTime.asSeconds());
 
         if (frame_counter >= 0.0167) 
         {
-            // have for loop iterate through all entities to tick() them once we have them 
-            player.tick(elapsedTime.asSeconds(), cmap);
+            for (auto e : entities)
+                e->tick(elapsedTime.asSeconds(), cmap);
 
             window.clear();
             window.draw(background);
-            window.draw(player.sprite);
+            for (auto e : entities)
+                window.draw(e->getSprite());
+
             window.display();
         }
 
@@ -37,7 +39,7 @@ int Game::GameLoop() {
     return 0;
 }
 
-void Game::getInput()
+void Game::getInput(float elapsedTime)
 {
     sf::Event event;
     while (window.pollEvent(event))
@@ -53,6 +55,7 @@ void Game::getInput()
             case (sf::Keyboard::Down): player.downFlag = false; break;
             case (sf::Keyboard::Left): player.leftFlag = false; break;
             case (sf::Keyboard::Right): player.rightFlag = false; break;
+            case (sf::Keyboard::Space): player.aFlag = false; player.aFlagUsed = false; break;
             }
         }
 
@@ -62,15 +65,13 @@ void Game::getInput()
             player.isMoving = true;
 
             switch (event.key.code)
-            {     // If escape is pressed, close the application
-            case (sf::Keyboard::Escape): window.close(); break;
-
-                // Process the up, down, left and right keys
-            case (sf::Keyboard::Down): player.downFlag = true; break;
+            {  
+            case (sf::Keyboard::Escape): window.close(); break;   // If escape is pressed, close the application
+            case (sf::Keyboard::Down): player.downFlag = true; break; // Process the up, down, left and right keys
             case (sf::Keyboard::Up): player.upFlag = true; break;
             case (sf::Keyboard::Left): player.leftFlag = true; break;
             case (sf::Keyboard::Right): player.rightFlag = true; break;
-            default: break;
+            case (sf::Keyboard::Space): player.aFlag = true; std::cout << player.aFlag; break;
             }
         }
     }

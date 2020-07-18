@@ -2,14 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 #include "map.h"
-
-constexpr int WINDOW_WIDTH = 256;
-constexpr int WINDOW_HEIGHT = 240;
+#include "Window.h"
 
 enum SpriteSheetRows
 {
 	Link,
+	Octorok
 };
 
 class Entity
@@ -17,59 +17,29 @@ class Entity
 protected:
 	sf::IntRect frame;
 	sf::Texture texture;
+	sf::Sprite sprite;
 
 	int width;
 	int height;
 
+	short animationFrame { 0 };	// what frame of animation cycle X on sprite sheet
+	short totalAnimationFrames { 0 };	// the total number of key frames a sprite has for each direction
+	short spriteSheetIndex { 0 }; // what the sprite is Y on sprite sheet
+	short spriteSheetXOffset { 0 }; // to identify x offset of entities and help with creature sprite finsing
+	float currentAnimationDuration { 0. };
+	float secondsPerAnimationUpdate { 0. };
+
 protected:
 	void getSpriteSheet(int spriteSheet);
+	virtual void updateSprite();
+
 public:
-	sf::Sprite sprite;
 	float x;
 	float y;
-	Entity();
-};
 
-
-class Creature : public Entity
-{
 public:
-	bool isMoving{ false };
-
-protected:
-	float xVel{ 0 };
-	float yVel{ 0 };
-
-	int health{ 1 };
-	int speed{ 50 };
-
-	short newDirection{ 0 };			// S = 0, N = 1, E = 2, W = 3
-	short oldDirection{ 0 };			// old is set to new when direction doesnt change
-	short animationFrame{ 0 };	// what frame of animation cycle
-	const short keyFrameDuration{ 60 };
-	float keyFrameDurationIndex{ 0.0f };
-	void checkCollision(Map cmap, float elapsedTime);
+	virtual void tick(float elapsedTime, const Map &cmap);
+	sf::Sprite getSprite();
 	
-	bool isPerformingAction { false };
-
-	short attackDuration { 60 };	// in frames
-	short attackCooldown  { 60 };	// also in frames
-
-	int getDirection();
-
-	Creature() : Entity() {}
-};
-
-class Player : public Creature
-{
-private:
-	float secondsPerUpdate;
-public:
-	bool upFlag{}, downFlag{}, leftFlag{}, rightFlag{};
-	void setDirection(int direction);
-	void tick(float elapsedTime, const Map &cmap);
-	void updateSprite();
-
-	Player();
-	//Player() : Creature() {}
+	Entity();
 };
