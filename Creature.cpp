@@ -23,7 +23,6 @@ void Creature::performAction(float elapsedTime)
 			updateSprite();
 		}
 	}
-
 }
 
 void Creature::updateSprite()
@@ -36,7 +35,7 @@ void Creature::updateSprite()
 	else
 		xOffset = animationFrame;
 
-	sf::IntRect frame((((direction * 3) + xOffset) * 16), spriteSheetIndex, width, height);
+	sf::IntRect frame((((direction * (totalAnimationFrames)) + xOffset) * width), height, width, height);	// (x,y,width,height)
 	sprite.setTextureRect(frame);
 }
 
@@ -46,9 +45,6 @@ void Creature::updatePosition(float elapsedTime, const Map& cmap)
 
 	y += yVel * elapsedTime * speed;
 	x += xVel * elapsedTime * speed;
-
-	//static_cast<int>(x);
-	//static_cast<int>(y);
 
 	sprite.setPosition(x, y);
 
@@ -87,24 +83,19 @@ void Creature::checkCollision(Map cmap, float elapsedTime) {
 	float new_x = x + xVel * elapsedTime * speed;
 
 	if (xVel <= 0) {
-
-		if (cmap.GetSolid(new_x / 16 - 0.4f, y / 16) || cmap.GetSolid(new_x / 16 - 0.4f, y / 16 + 0.5f)) {
+		if (cmap.GetSolid(new_x / 16 - 0.4f, y / 16) || cmap.GetSolid(new_x / 16 - 0.4f, y / 16 + 0.5f)) 
 			xVel = 0;
-		}
 	}
 	else {
-		if (cmap.GetSolid(new_x / 16 + 0.4f, y / 16) || cmap.GetSolid(new_x / 16 + 0.4f, y / 16 + 0.5f)) {
+		if (cmap.GetSolid(new_x / 16 + 0.4f, y / 16) || cmap.GetSolid(new_x / 16 + 0.4f, y / 16 + 0.5f)) 
 			xVel = 0;
-		}
 	}
 	if (yVel <= 0) {
-		if (cmap.GetSolid(x / 16 + 0.4f, new_y / 16) || cmap.GetSolid(x / 16 - 0.4f, new_y / 16)) {
+		if (cmap.GetSolid(x / 16 + 0.4f, new_y / 16) || cmap.GetSolid(x / 16 - 0.4f, new_y / 16)) 
 			yVel = 0;
-		}
 	}
 	else {
-		if (cmap.GetSolid(x / 16 + 0.4f, new_y / 16 + 0.5f) || cmap.GetSolid(x / 16 - 0.4f, new_y / 16 + 0.5f)) {
+		if (cmap.GetSolid(x / 16 + 0.4f, new_y / 16 + 0.5f) || cmap.GetSolid(x / 16 - 0.4f, new_y / 16 + 0.5f)) 
 			yVel = 0;
-		}
 	}
 }

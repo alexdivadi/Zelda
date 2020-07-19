@@ -13,7 +13,7 @@ int Game::GameLoop()
         elapsedTime = clock.restart();
         getInput(elapsedTime.asSeconds());
 
-        if (frame_counter >= 0.0167) 
+        if (frame_counter >= 0.0167f)
         {
             for (auto e : entities)
                 e->tick(elapsedTime.asSeconds(), cmap);
@@ -29,7 +29,7 @@ int Game::GameLoop()
         fps++;
         frame_counter += elapsedTime.asSeconds();
 
-        if (frame_counter >= 1.) {
+        if (frame_counter >= 1.0f) {
             std::cout << "fps: " << fps << std::endl;
             frame_counter = 0.;
             fps = 0;
@@ -71,9 +71,8 @@ void Game::getInput(float elapsedTime)
             case (sf::Keyboard::Up): player.upFlag = true; break;
             case (sf::Keyboard::Left): player.leftFlag = true; break;
             case (sf::Keyboard::Right): player.rightFlag = true; break;
-            case (sf::Keyboard::Space): player.aFlag = true; std::cout << player.aFlag; break;
+            case (sf::Keyboard::Space): player.aFlag = true; break;
             }
         }
     }
 }
-

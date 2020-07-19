@@ -1,0 +1,5 @@
+enum EntityId
+{
+	Link,
+	Octorok
+};

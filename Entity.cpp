@@ -2,10 +2,17 @@
 
 Entity::Entity()
 {
-	x = WINDOW_WIDTH / 2;
-	y = WINDOW_HEIGHT / 3;
-	width = 0;
-	height = 0;
+
+}
+
+void Entity::setUpSprite()
+{
+	setSpriteSheet(id);	// Opens specific png file and set's texture to that image
+	sprite.setTexture(texture);
+	sprite.setOrigin(width / 2.0f, height / 2.0f);
+	sprite.setPosition(x, y);
+
+	updateSprite();
 }
 
 sf::Sprite Entity::getSprite()
@@ -13,32 +20,21 @@ sf::Sprite Entity::getSprite()
 	return sprite;
 }
 
-void Entity::getSpriteSheet(int spriteSheet)
+void Entity::setSpriteSheet(int id)	// set's texture to specified png
 {
-	switch (spriteSheet)
+	switch (id)
 	{
 	case(0):
 		texture.loadFromFile("Sprites/link.png");
 		break;
-	default:
-		texture.loadFromFile("Sprites/link.png");
+	case(1):
+		texture.loadFromFile("Sprites/octorok.png");
 		break;
+	default:
+		texture.loadFromFile("Sprites/tiles.png");
 	}
 }
 
-void Entity::tick(float elapsedTime, const Map& cmap)
-{
-	currentAnimationDuration += elapsedTime;
-	if (currentAnimationDuration > secondsPerAnimationUpdate)
-	{
-		animationFrame = (animationFrame + 1) % totalAnimationFrames;
-		currentAnimationDuration = 0;
-	}
-	updateSprite();
-}
+void Entity::tick(float elapsedTime, const Map& cmap) { }
 
-void Entity::updateSprite()
-{
-	sf::IntRect frame((animationFrame * 16), spriteSheetIndex, width, height);
-	sprite.setTextureRect(frame);
-}
+void Entity::updateSprite() { }

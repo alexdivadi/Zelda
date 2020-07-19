@@ -4,10 +4,17 @@
 
 class Player : public Creature
 {
+private:
+	bool isLink;
+
+private:
+	void updateSprite();
+
 public:
 	bool upFlag{}, downFlag{}, leftFlag{}, rightFlag{}, aFlag{};
-	void tick(float elapsedTime, const Map& cmap) override;
 
-	Player(std::vector<Entity*>& e);
-	Player() {};
+public:
+	void tick(float elapsedTime, const Map& cmap);
+
+	Player(std::vector<Entity*>& e, short w, short h, bool l, short i, float s, short a);
 };
