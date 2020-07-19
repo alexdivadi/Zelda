@@ -3,10 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <stdio.h>
 #include <vector>
-
 #include "map.h"
-#include "TileMap.h"
 #include "Player.h"
+#include "TileMap.h"
 
 class Game
 {
@@ -17,12 +16,12 @@ private:
 
 	std::vector<Entity*> entities;
 
-	Player player{ entities };
+	Player player{ entities, 16, 16, true, 0, 0.2f, 2};	//entity vector, width, height, link, entity id, keyframeduration, numkeyframes
 	Map cmap;
 	TileMap background;
 
 	int fps = 0;
-	float frame_counter = 0.0;
+	float frame_counter = 0;
    
 private:
 	void getInput(float elapsedTime);
@@ -30,4 +29,3 @@ private:
 public:
 	int GameLoop();
 };
-
